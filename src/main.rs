@@ -1,5 +1,6 @@
 use dotenv::dotenv;
 use std::env;
+mod analyse;
 mod logic;
 mod models;
 mod weather;
@@ -12,8 +13,8 @@ async fn main() {
     dotenv().ok();
     match env::var("QWEATHER_KEY") {
         Ok(api_key) => {
-            let location = "101270101"; // 成都
-            let city_name = "成都";
+            let location = "101010100"; // 成都
+            let city_name = "北京";
             println!("正在获取{}天气...", city_name);
 
             if let Err(e) = main_logic(location, city_name, &api_key).await {
