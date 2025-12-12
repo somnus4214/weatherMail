@@ -1,34 +1,15 @@
 use crate::staticconfig::get_smtp_config;
 use base64::{Engine as _, engine::general_purpose};
+use lettre::AsyncTransport;
 use lettre::transport::smtp::authentication::Credentials;
-use lettre::{Message, SmtpTransport, Transport, message::header};
+use lettre::{AsyncSmtpTransport, Message, message::header};
 use std::fs;
 use tera::{Context, Tera};
 
-fn mail_send(mes: &str, target_mail: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let smtp_config = get_smtp_config();
-    let email = Message::builder()
-        .from(smtp_config.from.parse()?)
-        .to(target_mail.parse()?)
-        .subject("Test from Rust")
-        .body(String::from(mes))?;
-
-    let creds = Credentials::new(smtp_config.username.clone(), smtp_config.password.clone());
-
-    let mailer = SmtpTransport::starttls_relay(&smtp_config.server)?
-        .port(smtp_config.port)
-        .credentials(creds)
-        .build();
-
-    mailer.send(&email)?;
-    println!("邮件发送成功!");
-    Ok(())
-}
-
-fn mail_send_html(target_mail: &str) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn mail_send_html(target_mail: &str) -> Result<(), Box<dyn std::error::Error>> {
     let smtp_config = get_smtp_config();
 
-    let image_data = fs::read("assets/icons/100-fill.svg")?;
+    let image_data = fs::read("assets/icons/150-fill.svg")?;
     let base64_image = general_purpose::STANDARD.encode(&image_data);
     let data_uri = format!("data:image/svg+xml;base64,{}", base64_image);
 
@@ -56,12 +37,12 @@ fn mail_send_html(target_mail: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     let creds = Credentials::new(smtp_config.username.clone(), smtp_config.password.clone());
 
-    let mailer = SmtpTransport::starttls_relay(&smtp_config.server)?
+    let mailer = AsyncSmtpTransport::<lettre::Tokio1Executor>::starttls_relay(&smtp_config.server)?
         .port(smtp_config.port)
         .credentials(creds)
         .build();
 
-    mailer.send(&email)?;
+    mailer.send(email).await?;
     println!("邮件发送成功!");
     Ok(())
 }
@@ -70,19 +51,10 @@ fn mail_send_html(target_mail: &str) -> Result<(), Box<dyn std::error::Error>> {
 mod test {
     use super::*;
 
-    #[test]
-    fn test_mail_send() {
-        let mes = "hello from smtp";
+    #[tokio::test]
+    async fn test_html_mail_send() {
         let test_mail = "chen1921460502@outlook.com";
-        match mail_send(mes, test_mail) {
-            Ok(_) => println!("测试通过"),
-            Err(e) => eprintln!("发送失败: {}", e),
-        }
-    }
-    #[test]
-    fn test_html_mail_send() {
-        let test_mail = "chen1921460502@outlook.com";
-        match mail_send_html(test_mail) {
+        match mail_send_html(test_mail).await {
             Ok(_) => println!("测试通过"),
             Err(e) => eprintln!("发送失败：{}", e),
         }
