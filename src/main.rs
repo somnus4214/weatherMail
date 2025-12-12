@@ -15,9 +15,10 @@ async fn main() {
     let qweather_api_key = &api_config.qweather;
     let location = "101010100"; // 
     let city_name = "北京";
+    let target_mail = "chen1921460502@outlook.com";
     println!("正在获取{}天气...", city_name);
 
-    if let Err(e) = main_logic(location, city_name, &qweather_api_key).await {
+    if let Err(e) = main_logic(location, city_name, &qweather_api_key, target_mail).await {
         eprintln!("错误: {}", e);
     }
 }

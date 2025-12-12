@@ -14,6 +14,8 @@ pub struct HourlyWeather {
     pub fx_time: String,
     pub temp: String,
     pub text: String,
+    #[serde(rename = "icon")]
+    pub icon: Option<String>,
     #[serde(rename = "windDir")]
     pub wind_dir: Option<String>,
     #[serde(rename = "windScale")]
@@ -22,4 +24,6 @@ pub struct HourlyWeather {
     pub humidity: Option<String>,
     #[serde(rename = "pop")]
     pub pop: Option<String>,
+    #[serde(rename = "windSpeed")]
+    pub wind_speed: Option<String>,
 }

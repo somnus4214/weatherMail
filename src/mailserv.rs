@@ -1,9 +1,10 @@
 use crate::staticconfig::get_smtp_config;
+use base64::{Engine as _, engine::general_purpose};
 use lettre::AsyncTransport;
 use lettre::transport::smtp::authentication::Credentials;
 use lettre::{AsyncSmtpTransport, Message, message::header};
+use std::fs;
 use tera::{Context, Tera};
-
 pub struct WeatherEmailData {
     pub date: String,
     pub city: String,
@@ -62,6 +63,15 @@ pub async fn mail_send_html(
     mailer.send(email).await?;
     println!("邮件发送成功!");
     Ok(())
+}
+
+pub fn icon_set(icon_code: &str) -> String {
+    let icon_path = format!("assets/icons/{}-fill.svg", icon_code);
+    let image_data = std::fs::read(&icon_path).unwrap_or_else(|_| {
+        std::fs::read("assets/icons/150-fill.svg").expect("Failed to read default icon")
+    });
+    let base64_image = base64::engine::general_purpose::STANDARD.encode(&image_data);
+    format!("data:image/svg+xml;base64,{}", base64_image)
 }
 
 #[cfg(test)]
