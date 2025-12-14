@@ -16,14 +16,24 @@ pub struct HourlyWeather {
     pub text: String,
     #[serde(rename = "icon")]
     pub icon: Option<String>,
+    #[serde(rename = "wind360")]
+    pub wind_360: Option<String>,
     #[serde(rename = "windDir")]
     pub wind_dir: Option<String>,
     #[serde(rename = "windScale")]
     pub wind_scale: Option<String>,
+    #[serde(rename = "windSpeed")]
+    pub wind_speed: Option<String>,
     #[serde(rename = "humidity")]
     pub humidity: Option<String>,
     #[serde(rename = "pop")]
     pub pop: Option<String>,
-    #[serde(rename = "windSpeed")]
-    pub wind_speed: Option<String>,
+    #[serde(rename = "precip")]
+    pub precip: Option<String>,
+    #[serde(rename = "pressure")]
+    pub pressure: Option<String>,
+    #[serde(rename = "cloud")]
+    pub cloud: Option<String>,
+    #[serde(rename = "dew")]
+    pub dew: Option<String>,
 }

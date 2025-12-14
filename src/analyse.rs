@@ -1,6 +1,8 @@
 use crate::models::QWeatherResponse;
 use std::f32;
 
+pub mod dsanal;
+
 #[derive(Debug)]
 pub struct AnalyseReport {
     pub mean_temp: f32,

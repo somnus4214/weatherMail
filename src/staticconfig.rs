@@ -31,11 +31,13 @@ pub fn get_smtp_config() -> &'static SmtpConfig {
 #[derive(Debug, Clone)]
 pub struct ApiConfig {
     pub qweather: String,
+    pub deepseek: String,
 }
 static API_CONFIG: Lazy<ApiConfig> = Lazy::new(|| {
     dotenv().ok();
     ApiConfig {
         qweather: env::var("QWEATHER_KEY").expect("QWEATHER_KEY未设置"),
+        deepseek: env::var("DEEPSEEK_API_KEY").expect("DEEPSEEK_API_KEY未设置"),
     }
 });
 pub fn get_api_config() -> &'static ApiConfig {
