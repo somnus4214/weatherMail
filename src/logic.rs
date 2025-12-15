@@ -1,14 +1,16 @@
+use crate::analyse::dsanal::deepseek_analysis;
 use crate::analyse::weather_report;
 use crate::mailserv::{self, WeatherEmailData, icon_set};
 use crate::weather::get_today_weather;
-
 pub async fn main_logic(
     location: &str,
     city_name: &str,
-    api_key: &str,
     target_mail: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let data = get_today_weather(location, api_key).await?;
+    let api_config = crate::staticconfig::get_api_config();
+    let qweather_api_key = &api_config.qweather;
+    let deepseek_api_key = &api_config.deepseek;
+    let data = get_today_weather(location, qweather_api_key).await?;
     println!("成功获取{}的天气数据,共{}条", city_name, data.hourly.len());
     if let Some(ref update_time) = data.update_time {
         println!("数据更新时间:{}", update_time);
@@ -16,6 +18,7 @@ pub async fn main_logic(
     if data.hourly.is_empty() {
         return Err("未获取到任何天气数据".into());
     }
+    let deepseek_desc = deepseek_analysis(&data, deepseek_api_key).await?;
     let analyse_report = weather_report(&data)?;
     let email_content = WeatherEmailData {
         date: data.update_time.clone().unwrap_or_default(),
@@ -33,13 +36,7 @@ pub async fn main_logic(
             .wind_speed
             .clone()
             .unwrap_or_else(|| "未知".to_string()),
-        suggestion: format!(
-            "今日气温范围:{}°C ~ {}°C，平均温度:{}°C，昼夜温差:{}°C",
-            analyse_report.min_temp,
-            analyse_report.max_temp,
-            analyse_report.mean_temp,
-            analyse_report.range_temp
-        ),
+        suggestion: deepseek_desc,
     };
     mailserv::mail_send_html(target_mail, &email_content).await?;
     // println!(

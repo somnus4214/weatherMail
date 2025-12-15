@@ -1,9 +1,8 @@
 use crate::staticconfig::get_smtp_config;
-use base64::{Engine as _, engine::general_purpose};
+use base64::Engine as _;
 use lettre::AsyncTransport;
 use lettre::transport::smtp::authentication::Credentials;
 use lettre::{AsyncSmtpTransport, Message, message::header};
-use std::fs;
 use tera::{Context, Tera};
 pub struct WeatherEmailData {
     pub date: String,
@@ -77,7 +76,7 @@ pub fn icon_set(icon_code: &str) -> String {
 #[cfg(test)]
 mod test {
     use super::*;
-    use base64::{Engine as _, engine::general_purpose};
+    use base64::engine::general_purpose;
     use std::fs;
 
     #[tokio::test]
