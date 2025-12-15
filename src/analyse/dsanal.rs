@@ -1,6 +1,7 @@
 // 调用deepseek进行穿搭分析
 use crate::analyse::weather_to_description;
 use crate::models::QWeatherResponse;
+use pulldown_cmark::{Options, Parser, html};
 use reqwest;
 use serde::{Deserialize, Serialize};
 
@@ -79,12 +80,21 @@ pub async fn deepseek_analysis(
     }
 
     let deepseek_response: DeepSeekResponse = response.json().await?;
-
     if let Some(choice) = deepseek_response.choices.first() {
-        Ok(choice.message.content.clone())
+        let html_content = markdown2html(&choice.message.content.clone()).await?;
+        Ok(html_content)
     } else {
         Err("DeepSeek 返回空响应".into())
     }
+}
+
+pub async fn markdown2html(md_content: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let mut options = Options::empty();
+    options.insert(Options::ENABLE_STRIKETHROUGH);
+    let parser = Parser::new_ext(md_content, options);
+    let mut html_output = String::new();
+    html::push_html(&mut html_output, parser);
+    Ok(html_output)
 }
 
 #[cfg(test)]
