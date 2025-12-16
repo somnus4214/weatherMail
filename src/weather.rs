@@ -1,12 +1,30 @@
 use crate::models::QWeatherResponse;
 
+pub fn query_city_location_id(city_name: &str) -> Option<&'static str> {
+    let city_map = vec![
+        ("邗江", "101190606"),
+        ("成都", "101270101"),
+        ("北京", "101010100"),
+        // 可以继续添加更多城市
+    ];
+
+    for (name, id) in city_map {
+        if name == city_name {
+            return Some(id);
+        }
+    }
+    None
+}
+
 pub async fn get_today_weather(
-    location: &str,
+    city_name: &str,
     api_key: &str,
 ) -> Result<QWeatherResponse, Box<dyn std::error::Error>> {
+    let location_id =
+        query_city_location_id(city_name).ok_or_else(|| format!("未找到城市: {}", city_name))?;
     let url = format!(
         "https://k46apx2392.re.qweatherapi.com/v7/weather/24h?location={}&key={}",
-        location, api_key
+        location_id, api_key
     );
     println!("请求URL: {}", url);
 

@@ -5,14 +5,13 @@ use crate::mailserv::{self, WeatherEmailData, icon_set};
 use crate::weather::get_today_weather;
 
 pub async fn main_logic(
-    location: &str,
     city_name: &str,
     target_mail: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let api_config = crate::staticconfig::get_api_config();
     let qweather_api_key = &api_config.qweather;
     let deepseek_api_key = &api_config.deepseek;
-    let data = get_today_weather(location, qweather_api_key).await?;
+    let data = get_today_weather(city_name, qweather_api_key).await?;
     println!("成功获取{}的天气数据,共{}条", city_name, data.hourly.len());
     if let Some(ref update_time) = data.update_time {
         println!("数据更新时间:{}", update_time);

@@ -10,12 +10,11 @@ use crate::logic::main_logic;
 
 #[tokio::main]
 async fn main() {
-    let location = "101190606"; // 
     let city_name = "邗江";
     let target_mail = "chen1921460502@outlook.com";
     println!("正在获取{}天气...", city_name);
 
-    if let Err(e) = main_logic(location, city_name, target_mail).await {
+    if let Err(e) = main_logic(city_name, target_mail).await {
         eprintln!("错误: {}", e);
     }
 }
