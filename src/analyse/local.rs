@@ -12,6 +12,7 @@ pub struct TemperatureRecord {
     pub temp_mean: f32,
     pub temp_max: f32,
     pub temp_min: f32,
+    pub city: String,
 }
 
 // 新增：返回的温度变化结构体
@@ -90,7 +91,11 @@ pub fn count_temperature_change(
     // 查找前一天记录并检查今天记录是否已存在
     let mut prev_record_opt: Option<TemperatureRecord> = None;
     let mut today_present = false;
-    for r in &existing_records {
+    let filtered_existing_records: Vec<&TemperatureRecord> = existing_records
+        .iter()
+        .filter(|c| c.city == current_record.city)
+        .collect();
+    for r in filtered_existing_records {
         if r.date == prev_date_str {
             prev_record_opt = Some(r.clone());
         }
@@ -144,6 +149,7 @@ mod tests {
             temp_mean: 25.0,
             temp_max: 30.0,
             temp_min: 20.0,
+            city: "测试城市".to_string(),
         };
         let result = save_temperature_record("data/temperature_records.csv", &record);
         assert!(result.is_ok());
@@ -156,6 +162,7 @@ mod tests {
             temp_mean: 26.0,
             temp_max: 31.0,
             temp_min: 21.0,
+            city: "测试城市".to_string(),
         };
         let result = count_temperature_change("data/temperature_records.csv", &record);
         assert!(result.is_ok());

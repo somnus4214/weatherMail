@@ -38,6 +38,7 @@ pub async fn main_logic(
         temp_mean: analyse_report.mean_temp,
         temp_max: analyse_report.max_temp,
         temp_min: analyse_report.min_temp,
+        city: city_name.to_string(),
     };
     let temp_change = count_temperature_change("data/temperature_records.csv", &current_record)?;
 
