@@ -2,7 +2,7 @@ use crate::models::QWeatherResponse;
 use std::f32;
 
 pub mod dsanal;
-
+pub mod local;
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct AnalyseReport {
@@ -32,7 +32,7 @@ pub fn weather_report(
     })
 }
 
-fn weather_to_description(data: &QWeatherResponse) -> String {
+pub fn weather_to_description(data: &QWeatherResponse) -> String {
     let mut desc = String::new();
 
     // 当前天气详情
@@ -164,7 +164,7 @@ mod test {
         let reader = BufReader::new(file);
         let qweather_data: QWeatherResponse = serde_json::from_reader(reader)?;
         Ok(qweather_data)
-    } 
+    }
 
     #[test]
     fn test_show_analyse() {

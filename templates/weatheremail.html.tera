@@ -62,6 +62,45 @@
             </td>
           </tr>
 
+          <!-- Temperature Changes -->
+          <tr>
+            <td style="padding: 0 40px 30px 40px;">
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #fff7ed; border-radius: 12px; padding: 12px; border: 1px solid #fcd34d;">
+                <tr>
+                  <td style="padding: 8px 12px; color: #92400e; font-weight: 700; font-size: 13px;">
+                    Temperature changes
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 12px;">
+                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td align="center" width="33%" style="border-right: 1px solid #f3e6d5;">
+                          <p style="margin: 0; color: #6b7280; font-size: 12px; font-weight: 600; text-transform: uppercase;">Avg change</p>
+                          <p style="margin: 6px 0 0 0; color: #7c2d12; font-size: 16px; font-weight: 700;">
+                            {{ temp_mean_change }}&deg;C
+                          </p>
+                        </td>
+                        <td align="center" width="33%" style="border-right: 1px solid #f3e6d5;">
+                          <p style="margin: 0; color: #6b7280; font-size: 12px; font-weight: 600; text-transform: uppercase;">Max change</p>
+                          <p style="margin: 6px 0 0 0; color: #7c2d12; font-size: 16px; font-weight: 700;">
+                            {{ temp_max_change }}&deg;C
+                          </p>
+                        </td>
+                        <td align="center" width="34%">
+                          <p style="margin: 0; color: #6b7280; font-size: 12px; font-weight: 600; text-transform: uppercase;">Min change</p>
+                          <p style="margin: 6px 0 0 0; color: #7c2d12; font-size: 16px; font-weight: 700;">
+                            {{ temp_min_change }}&deg;C
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
           <!-- AI Advice Section -->
           <tr>
             <td style="padding: 0 40px 40px 40px;">

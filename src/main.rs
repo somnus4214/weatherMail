@@ -10,8 +10,8 @@ use crate::logic::main_logic;
 
 #[tokio::main]
 async fn main() {
-    let location = "101010100"; // 
-    let city_name = "北京";
+    let location = "101190606"; // 
+    let city_name = "邗江";
     let target_mail = "chen1921460502@outlook.com";
     println!("正在获取{}天气...", city_name);
 

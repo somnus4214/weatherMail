@@ -15,6 +15,9 @@ pub struct WeatherEmailData {
     pub humidity: String,
     pub wind_speed: String,
     pub suggestion: String,
+    pub temp_mean_change: String,
+    pub temp_max_change: String,
+    pub temp_min_change: String,
 }
 
 impl WeatherEmailData {
@@ -31,6 +34,9 @@ impl WeatherEmailData {
         ctx.insert("wind_speed", &self.wind_speed);
         ctx.insert("suggestion", &self.suggestion);
         ctx.insert("bot_name", "Rust Weather Bot");
+        ctx.insert("temp_mean_change", &self.temp_mean_change);
+        ctx.insert("temp_max_change", &self.temp_max_change);
+        ctx.insert("temp_min_change", &self.temp_min_change);
         ctx
     }
 }
@@ -96,6 +102,9 @@ mod test {
             humidity: "80".to_string(),
             wind_speed: "12".to_string(),
             suggestion: "example_txt".to_string(),
+            temp_mean_change: "0".to_string(),
+            temp_max_change: "0".to_string(),
+            temp_min_change: "0".to_string(),
         };
 
         let test_mail = "chen1921460502@outlook.com";
